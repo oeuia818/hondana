@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h3>Set up your OpenAI API Key</h3>
+    <input type="text" id="apiKey" placeholder="Enter your OpenAI API Key" />
+    <button id="save">Save</button>
+    <script>
+      document.getElementById("save").addEventListener("click", function () {
+        const apiKey = document.getElementById("apiKey").value;
+        // Save the API key to storage
+        chrome.storage.sync.set({ apiKey: apiKey }, function () {
+          console.log("API key saved:", apiKey);
+        });
+      });
+    </script>
+  </body>
+</html>
