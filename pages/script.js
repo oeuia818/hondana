@@ -15,7 +15,7 @@ function renderBookmarkNode(node, container) {
 
   if (node.url) {
     const a = document.createElement("a");
-    a.hred = node.url;
+    a.href = node.url;
     a.textContent = node.title || node.url;
     a.target = "_blank"; // Open in new tab
     li.appendChild(a);
@@ -39,14 +39,33 @@ function getBookmarks() {
     console.warn("Bookmarks element not found");
     return;
   }
-  out.innerHTML = "Loading bookmarks...";
+  out.innerHTML = '<div class="loading">ブックマークを読み込み中...</div>';
 
   chrome.bookmarks.getTree((nodes) => {
     out.innerHTML = "";
-    const ul = document.createElement("ul");
-    nodes.forEach((node) => renderBookmarkNode(node, ul));
-    out.appendChild(ul);
+    if (nodes && nodes.length > 0) {
+      const ul = document.createElement("ul");
+      nodes.forEach((node) => renderBookmarkNode(node, ul));
+      out.appendChild(ul);
+    } else {
+      out.innerHTML =
+        '<p style="text-align: center; color: #7f8c8d; padding: 20px;">ブックマークが見つかりませんでした。</p>';
+    }
   });
 }
 
-document.addEventListener("DOMContentLoaded", getBookmarks);
+document.addEventListener("DOMContentLoaded", () => {
+  const loadBtn = document.getElementById("loadBookmarks");
+  const refreshBtn = document.getElementById("refreshBookmarks");
+
+  if (loadBtn) {
+    loadBtn.addEventListener("click", getBookmarks);
+  }
+
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", getBookmarks);
+  }
+
+  // ページ読み込み時に自動取得
+  getBookmarks();
+});
