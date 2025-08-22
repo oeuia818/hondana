@@ -54,9 +54,51 @@ function getBookmarks() {
   });
 }
 
+async function callOpenAI(prompt) {
+  const apiKey = await new Promise((resolve) => {
+    chrome.storage.sync.get("OPENAI_API_KEY", (data) => {
+      resolve(data.OPENAI_API_KEY || "");
+    });
+  });
+
+  if (!apiKey) {
+    alert("OpenAI APIキーが設定されていません。");
+    return;
+  }
+
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "" },
+        { role: "user", content: prompt },
+      ],
+    }),
+  });
+
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || "No response from OpenAI";
+}
+
+function organizeBookmarks() {
+  const bookmarks = chrome.bookmarks.getTree((nodes) => {
+    const bookmarksJson = JSON.stringify(nodes, null, 2);
+    const prompt = `${bookmarksJson}`;
+
+    const result = callOpenAI(prompt);
+    console.log(`OpenAIからの応答: ${result}`);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const loadBtn = document.getElementById("loadBookmarks");
   const refreshBtn = document.getElementById("refreshBookmarks");
+  const organizeBtn = document.getElementById("organizeBookmarks");
 
   if (loadBtn) {
     loadBtn.addEventListener("click", getBookmarks);
@@ -64,6 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (refreshBtn) {
     refreshBtn.addEventListener("click", getBookmarks);
+  }
+
+  if (organizeBtn) {
+    organizeBtn.addEventListener("click", () => {
+      // Organize bookmarks logic here
+    });
   }
 
   // ページ読み込み時に自動取得
