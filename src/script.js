@@ -133,14 +133,8 @@ function organizeBookmarks() {
       const prompt = buildBookmarksUserPrompt(nodes);
       const result = await callOpenAI(prompt);
       console.log(`Response from OpenAI: ${result}`);
-      const organizeResult = document.getElementById("organizeResult");
-      // Render as plain text to avoid HTML injection and keep JSON formatting
-      organizeResult.textContent = result;
     } catch (err) {
       console.error("Failed to organize bookmarks via OpenAI:", err);
-      const organizeResult = document.getElementById("organizeResult");
-      if (organizeResult)
-        organizeResult.textContent = "Failed to get a response from OpenAI.";
     }
   });
 }

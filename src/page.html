@@ -25,13 +25,26 @@
       </div>
 
       <div class="section">
+        <h2>Organize Bookmarks Settings</h2>
+        <div class="input-group">
+          <label for="systemPrompt">System Prompt:</label>
+          <input
+            type="text"
+            id="systemPrompt"
+            placeholder="Custom system prompt (optional)"
+          />
+        </div>
+        <div class="bookmark-controls">
+          <button id="organizeBookmarks">Organize Bookmarks</button>
+        </div>
+      </div>
+
+      <div class="section">
         <h2>Bookmarks</h2>
         <div class="bookmark-controls">
           <button id="loadBookmarks">Load Bookmarks</button>
-          <button id="organizeBookmarks">Organize</button>
         </div>
         <div id="bookmarks" class="bookmarks-container"></div>
-        <div id="organizeResult" class="bookmarks-container"></div>
       </div>
     </div>
 
