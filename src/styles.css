@@ -124,11 +124,11 @@ header h1 {
   transform: translateY(-1px);
 }
 
-#refreshBookmarks {
+#organizeBookmarks {
   background: #f39c12 !important;
 }
 
-#refreshBookmarks:hover {
+#organizeBookmarks:hover {
   background: #e67e22 !important;
 }
 

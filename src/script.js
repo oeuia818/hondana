@@ -114,7 +114,7 @@ async function callOpenAI(prompt) {
     },
     body: JSON.stringify({
       // TODO: Consider using a newer small model (e.g., gpt-4o-mini) if available
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
       messages: [
         { role: "system", content: BOOKMARKS_SYSTEM_PROMPT },
         { role: "user", content: prompt },
@@ -147,15 +147,10 @@ function organizeBookmarks() {
 
 document.addEventListener("DOMContentLoaded", () => {
   const loadBtn = document.getElementById("loadBookmarks");
-  const refreshBtn = document.getElementById("refreshBookmarks");
   const organizeBtn = document.getElementById("organizeBookmarks");
 
   if (loadBtn) {
     loadBtn.addEventListener("click", getBookmarks);
-  }
-
-  if (refreshBtn) {
-    refreshBtn.addEventListener("click", getBookmarks);
   }
 
   if (organizeBtn) {
